@@ -57,39 +57,21 @@ int read_conf(void) {
     }
 
     while (fgets(line, sizeof(line), config_fp)) {
-        if (strstr(line, "PERFORMANCE_LEVEL") != NULL) {
-            if (sscanf(line, "PERFORMANCE_LEVEL = %s", performance_level) == 1) {
-                apply_conf("power_dpm_force_performance_level", performance_level, 0);
-                continue;
-            }
-        } else if (strstr(line, "GPU_CLOCK_PSTATE_AND_MHZ") != NULL) {
-            if (sscanf(line, "GPU_CLOCK_PSTATE_AND_MHZ = %d %d", &gpu_clock_pstate, &gpu_clock_mhz) == 2) {
-                snprintf(value_buff, 64, "s %d %d", gpu_clock_pstate, gpu_clock_mhz);
-                apply_conf("pp_od_clk_voltage", value_buff, 1);
-                continue;
-            } 
-        } else if (strstr(line, "GPU_ENABLED_PSTATES") != NULL) {
-            if (sscanf(line, "GPU_ENABLED_PSTATES = %[^\n]", gpu_pstates) == 1) {
-                apply_conf("pp_dpm_sclk", gpu_pstates, 0);
-                continue;
-            }
-        } else if (strstr(line, "VRAM_PSTATE_AND_MHZ") != NULL) {
-            if (sscanf(line, "VRAM_PSTATE_AND_MHZ = %d %d", &vram_pstate, &vram_mhz) == 2) {
-                snprintf(value_buff, 64, "m %d %d", vram_pstate, vram_mhz);
-                apply_conf("pp_od_clk_voltage", value_buff, 1);
-                continue;
-            }
-        } else if (strstr(line, "VRAM_ENABLED_PSTATES") != NULL) {
-            if (sscanf(line, "VRAM_ENABLED_PSTATES = %[^\n]", vram_pstates) == 1) {
-                apply_conf("pp_dpm_mclk", vram_pstates, 0);
-                continue;
-            }
-        } else if (strstr(line, "VOLTAGE_OFFSET") != NULL) {
-            if (sscanf(line, "VOLTAGE_OFFSET = %d", &voltage_offset) == 1) {
-                snprintf(value_buff, 64, "vo %d", voltage_offset);
-                apply_conf("pp_od_clk_voltage", value_buff, 1);
-                continue;
-            }
+        if (sscanf(line, "PERFORMANCE_LEVEL = %s", performance_level) == 1) {
+            apply_conf("power_dpm_force_performance_level", performance_level, 0);
+        } else if (sscanf(line, "GPU_CLOCK_PSTATE_AND_MHZ = %d %d", &gpu_clock_pstate, &gpu_clock_mhz) == 2) {
+            snprintf(value_buff, 64, "s %d %d", gpu_clock_pstate, gpu_clock_mhz);
+            apply_conf("pp_od_clk_voltage", value_buff, 1);
+        } else if (sscanf(line, "GPU_ENABLED_PSTATES = %[^\n]", gpu_pstates) == 1) {
+            apply_conf("pp_dpm_sclk", gpu_pstates, 0);
+        } else if (sscanf(line, "VRAM_PSTATE_AND_MHZ = %d %d", &vram_pstate, &vram_mhz) == 2) {
+            snprintf(value_buff, 64, "m %d %d", vram_pstate, vram_mhz);
+            apply_conf("pp_od_clk_voltage", value_buff, 1);
+        } else if (sscanf(line, "VRAM_ENABLED_PSTATES = %[^\n]", vram_pstates) == 1) {
+            apply_conf("pp_dpm_mclk", vram_pstates, 0);
+        } else if (sscanf(line, "VOLTAGE_OFFSET = %d", &voltage_offset) == 1) {
+            snprintf(value_buff, 64, "vo %d", voltage_offset);
+            apply_conf("pp_od_clk_voltage", value_buff, 1);
         }
     }
 
